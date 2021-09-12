@@ -351,6 +351,53 @@ function RangedAttack(Actor A)
 }
 
 
+//=============================================================================
+//                   headshot fix while machinegunning
+//=============================================================================
+state FireChaingun
+{
+  function TakeDamage( int Damage, Pawn InstigatedBy, Vector Hitlocation, Vector Momentum, class<DamageType> damageType, optional int HitIndex)
+  {
+    local float EnemyDistSq, DamagerDistSq;
+
+    // changed vect(0,0,0) with Momentum
+    global.TakeDamage(Damage,instigatedBy,hitlocation,Momentum,damageType);
+
+    // if someone close up is shooting us, just charge them
+    if (InstigatedBy != none)
+    {
+      DamagerDistSq = VSizeSquared(Location - InstigatedBy.Location);
+
+      if ((ChargeDamage > 200 && DamagerDistSq < (500 * 500)) || DamagerDistSq < (100 * 100))
+      {
+        SetAnimAction('transition');
+        GoToState('Charging');
+        return;
+      }
+    }
+
+    if (Controller.Enemy != none && InstigatedBy != none && InstigatedBy != Controller.Enemy)
+    {
+      EnemyDistSq = VSizeSquared(Location - Controller.Enemy.Location);
+      DamagerDistSq = VSizeSquared(Location - InstigatedBy.Location);
+    }
+
+    if (InstigatedBy != none && (DamagerDistSq < EnemyDistSq || Controller.Enemy == none))
+    {
+      MonsterController(Controller).ChangeEnemy(InstigatedBy,Controller.CanSee(InstigatedBy));
+      Controller.Target = InstigatedBy;
+      Controller.Focus = InstigatedBy;
+
+      if (DamagerDistSq < (500 * 500))
+      {
+        SetAnimAction('transition');
+        GoToState('Charging');
+      }
+    }
+  }
+}
+
+
 defaultproperties
 {
   MenuName="Super Patriarch"
