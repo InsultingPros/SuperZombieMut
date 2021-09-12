@@ -70,7 +70,8 @@ simulated function HurtRadiusThroughDoor(float DamageAmount, float DamageRadius,
         UsedDamageAmount = DamageAmount;
       }
 
-      Victims.TakeDamage(damageScale * UsedDamageAmount,Instigator, Victims.Location - 0.5 * (Victims.CollisionHeight + Victims.CollisionRadius) * dir,
+      // fixed instigator not set to self!
+      Victims.TakeDamage(damageScale * UsedDamageAmount, self, Victims.Location - 0.5 * (Victims.CollisionHeight + Victims.CollisionRadius) * dir,
                 (damageScale * UsedMomentum * dir),DamageType);
 
       if (Instigator != None && Vehicle(Victims) != None && Vehicle(Victims).Health > 0)
