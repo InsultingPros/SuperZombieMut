@@ -135,6 +135,16 @@ Ignores RangedAttack;
 }
 
 
+// ctrl == none fixes
+function bool MeleeDamageTarget(int hitdamage, vector pushdir)
+{
+  if (Controller != none && Controller.Target != none && Controller.Target.IsA('NetKActor'))
+    pushdir = Normal(Controller.Target.Location - Location) * 100000;
+
+  return super(KFMonster).MeleeDamageTarget(hitdamage, pushdir);
+}
+
+
 state Charging
 {
   function BeginState()
