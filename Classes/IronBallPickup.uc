@@ -1,5 +1,7 @@
 class IronBallPickup extends Pickup;
 
-defaultproperties {
-    InventoryType= class'SuperZombieMut.IronBall'
+
+defaultproperties
+{
+  InventoryType= class'IronBall'
 }

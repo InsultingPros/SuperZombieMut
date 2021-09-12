@@ -27,11 +27,6 @@ var array<oldNewZombiePair> replacementArray;
 var array<propertyDescPair> propDescripArray;
 var array<String> replCaps;
 
-/** @deprecated in v2.3.2 */
-var BleedingPawns BP;
-/** @deprecated in v2.3.2 */
-var PoisonedPawns PP;
-
 /**
  * Stores damage types fp has 75% resistance too. 
  * @deprecated
