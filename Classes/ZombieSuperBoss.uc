@@ -70,7 +70,10 @@ simulated function Tick(float DeltaTime)
 }
 
 
-// ammo class == none fix
+//=============================================================================
+//                              ammo class == none fix
+//=============================================================================
+
 state FireMissile
 {
   function AnimEnd(int Channel)
@@ -135,13 +138,80 @@ Ignores RangedAttack;
 }
 
 
-// ctrl == none fixes
+//=============================================================================
+//                              ctrl == none fixes
+//=============================================================================
+
 function bool MeleeDamageTarget(int hitdamage, vector pushdir)
 {
   if (Controller != none && Controller.Target != none && Controller.Target.IsA('NetKActor'))
     pushdir = Normal(Controller.Target.Location - Location) * 100000;
 
   return super(KFMonster).MeleeDamageTarget(hitdamage, pushdir);
+}
+
+
+// non-state one
+function ClawDamageTarget()
+{
+  local vector PushDir;
+  local name Anim;
+  local float frame,rate;
+  local float UsedMeleeDamage;
+  local bool bDamagedSomeone;
+  local KFHumanPawn P;
+  local Actor OldTarget;
+
+  // check this from the very start to prevent any log spam
+  if (Controller == none || IsInState('ZombieDying'))
+    return;
+
+  if (MeleeDamage > 1)
+    UsedMeleeDamage = (MeleeDamage - (MeleeDamage * 0.05)) + (MeleeDamage * (FRand() * 0.1));
+  else
+    UsedMeleeDamage = MeleeDamage;
+
+  GetAnimParams(1, Anim,frame,rate);
+
+  if (Controller.Target != none)
+    PushDir = (damageForce * Normal(Controller.Target.Location - Location));
+  else
+    PushDir = damageForce * vector(Rotation);
+
+  // merging 2 similar checks
+  // dick animation
+  if (Anim == 'MeleeImpale')
+  {
+    MeleeRange = ImpaleMeleeDamageRange;
+    bDamagedSomeone = MeleeDamageTarget(UsedMeleeDamage, PushDir);
+  }
+  // the hand animation
+  else
+  {
+    MeleeRange = ClawMeleeDamageRange;
+    OldTarget = Controller.Target;
+
+    foreach DynamicActors(class'KFHumanPawn', P)
+    {
+      if ( (P.Location - Location) dot PushDir > 0.0 ) // Added dot Product check in Balance Round 3
+      {
+        Controller.Target = P;
+        bDamagedSomeone = bDamagedSomeone || MeleeDamageTarget(UsedMeleeDamage, damageForce * Normal(P.Location - Location)); // Always pushing players away added in Balance Round 3
+      }
+    }
+
+    Controller.Target = OldTarget;
+  }
+
+  MeleeRange = default.MeleeRange;
+
+  if (bDamagedSomeone)
+  {
+    if (Anim == 'MeleeImpale')
+      PlaySound(MeleeImpaleHitSound, SLOT_Interact, 2.0);
+    else
+      PlaySound(MeleeAttackHitSound, SLOT_Interact, 2.0);
+  }
 }
 
 
@@ -354,6 +424,7 @@ function RangedAttack(Actor A)
 //=============================================================================
 //                   headshot fix while machinegunning
 //=============================================================================
+
 state FireChaingun
 {
   function TakeDamage( int Damage, Pawn InstigatedBy, Vector Hitlocation, Vector Momentum, class<DamageType> damageType, optional int HitIndex)
