@@ -56,7 +56,7 @@ simulated function HurtRadiusThroughDoor(float DamageAmount, float DamageRadius,
       }
       else
       {
-        UsedMomentum= Momentum;
+        UsedMomentum = Momentum;
       }
 
       // Hack for shattering in interesting ways.
