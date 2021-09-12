@@ -1,5 +1,7 @@
 class DamTypeStalkerBleed extends KFMod.DamTypeSlashingAttack;
 
-defaultproperties {
-    bArmorStops= false
+
+defaultproperties
+{
+  bArmorStops=false
 }

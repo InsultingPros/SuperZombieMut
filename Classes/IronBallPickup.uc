@@ -3,5 +3,5 @@ class IronBallPickup extends Pickup;
 
 defaultproperties
 {
-  InventoryType= class'IronBall'
+  InventoryType=class'IronBall'
 }
