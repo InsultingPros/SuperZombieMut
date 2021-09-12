@@ -1,40 +1,48 @@
 class SZInteraction extends Interaction;
 
+
 var Material bleedIcon, poisonIcon;
 var float size;
 
-event NotifyLevelChange(){
-    Master.RemoveInteraction(self);
+
+event NotifyLevelChange()
+{
+  Master.RemoveInteraction(self);
 }
 
-function PostRender(Canvas canvas) {
-    local HUDKillingFloor kfHud;
-    local SZReplicationInfo szRI;
-    local int x, y, offset, i;
-    local Vector CamPos, ViewDir;
-    local Rotator CamRot;
-    local float OffsetX, BarLength, BarHeight, XL, YL, posY;
 
-    szRI= class'SZReplicationInfo'.static.findSZri(ViewportOwner.Actor.PlayerReplicationInfo);
-    if (szRI != none) {
-        offset= 2;
-        if (szRI.isBleeding) {
-            x= canvas.ClipX * 0.007;
-            y= canvas.ClipY * 0.93 - size * offset;
-            offset++;
-            canvas.SetPos(x, y);
-            canvas.DrawTile(bleedIcon, size, size, 0, 0, bleedIcon.MaterialUSize(), bleedIcon.MaterialVSize());
-        }
-        if (szRI.isPoisoned) {
-            x= canvas.ClipX * 0.007;
-            y= canvas.ClipY * 0.93 - size * offset;
-            canvas.SetPos(x, y);
-            canvas.DrawTile(poisonIcon, size, size, 0, 0, poisonIcon.MaterialUSize(), poisonIcon.MaterialVSize());
-        }
+function PostRender(Canvas canvas)
+{
+  local HUDKillingFloor kfHud;
+  local SZReplicationInfo szRI;
+  local int x, y, offset, i;
+  local Vector CamPos, ViewDir;
+  local Rotator CamRot;
+  local float OffsetX, BarLength, BarHeight, XL, YL, posY;
+
+  szRI = class'SZReplicationInfo'.static.findSZri(ViewportOwner.Actor.PlayerReplicationInfo);
+  if (szRI != none)
+  {
+    offset = 2;
+    if (szRI.isBleeding)
+    {
+      x = canvas.ClipX * 0.007;
+      y = canvas.ClipY * 0.93 - size * offset;
+      offset++;
+      canvas.SetPos(x, y);
+      canvas.DrawTile(bleedIcon, size, size, 0, 0, bleedIcon.MaterialUSize(), bleedIcon.MaterialVSize());
     }
+    if (szRI.isPoisoned)
+    {
+      x = canvas.ClipX * 0.007;
+      y = canvas.ClipY * 0.93 - size * offset;
+      canvas.SetPos(x, y);
+      canvas.DrawTile(poisonIcon, size, size, 0, 0, poisonIcon.MaterialUSize(), poisonIcon.MaterialVSize());
+    }
+  }
 
-    canvas.GetCAmeraLocation(CamPos, CamRot);
-    ViewDir= vector(CamRot);
+  canvas.GetCAmeraLocation(CamPos, CamRot);
+  ViewDir = vector(CamRot);
     kfHud= HUDKillingFloor(ViewportOwner.Actor.myHUD);
     OffsetX = (36.f * kfHud.default.VeterancyMatScaleFactor * 0.6) - (kfHud.default.HealthIconSize + 2.0);
     BarLength = FMin(kfHud.default.BarLength * (float(canvas.SizeX) / 1024.f), kfHud.default.BarLength);
@@ -67,11 +75,13 @@ function PostRender(Canvas canvas) {
     }
 }
 
-defaultproperties {
-    bActive= true
-    bVisible= true
 
-    size= 75.6
-    bleedIcon= Texture'SuperZombieMut.BleedIcon'
-    poisonIcon= Texture'SuperZombieMut.PoisonIcon'
+defaultproperties
+{
+  bActive=true
+  bVisible=true
+
+  size=75.6
+  bleedIcon=Texture'SuperZombieMut.BleedIcon'
+  poisonIcon=Texture'SuperZombieMut.PoisonIcon'
 }

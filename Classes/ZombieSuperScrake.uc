@@ -89,8 +89,10 @@ function PlayDirectionalHit(Vector HitLoc) {
     else SetAnimAction(KFHitLeft);
 }
 
-defaultproperties {
-    maxTimesFlipOver= 1
-    bIsFlippedOver= false
-    MenuName= "Super Scrake"
+
+defaultproperties
+{
+  MenuName="Super Scrake"
+  maxTimesFlipOver=1
+  bIsFlippedOver=false
 }
