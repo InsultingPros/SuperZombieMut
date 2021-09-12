@@ -109,14 +109,14 @@ function SpawnTwoShots()
 
   // Turn off extra collision before spawning vomit, otherwise spawn fails
   ToggleAuxCollision(false);
-  FireRotation = Controller.AdjustAim(SavedFireProperties,FireStart,600);
-  Spawn(class'KFBloatVomit',self,,FireStart,FireRotation);
+  FireRotation = Controller.AdjustAim(SavedFireProperties, FireStart, 600);
+  Spawn(class'KFBloatVomit', self,, FireStart, FireRotation);
 
-  FireStart -= (0.5*CollisionRadius*Y);
+  FireStart -= (0.5 * CollisionRadius * Y);
   FireRotation.Yaw -= 1200;
   spawn(class'KFBloatVomit',self,,FireStart, FireRotation);
 
-  FireStart += (CollisionRadius*Y);
+  FireStart += (CollisionRadius * Y);
   FireRotation.Yaw += 2400;
   spawn(class'KFBloatVomit', self,, FireStart, FireRotation);
   // Turn extra collision back on
