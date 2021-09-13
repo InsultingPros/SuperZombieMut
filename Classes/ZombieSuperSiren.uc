@@ -4,8 +4,8 @@ class ZombieSuperSiren extends ZombieSiren_STANDARD;
 // Modified the function so the screams hit through doors as well as damaging them
 simulated function SpawnTwoShots()
 {
-  // headless and zapped chickens can't cry
-  if (bZapped || bDecapitated)
+  // headless chickens can't cry
+  if (bDecapitated)
     return;
 
   DoShakeEffect();
