@@ -34,6 +34,28 @@ function bool MeleeDamageTarget(int hitdamage, vector pushdir)
 }
 
 
+// disable collision on death, so it won't alter player movement
+simulated function PlayDying(class<DamageType> DamageType, vector HitLoc)
+{
+  super.PlayDying(DamageType, HitLoc);
+
+  class'PawnHelper'.static.DisablePawnCollision(self);
+}
+
+
+state ZombieDying
+{
+ignores AnimEnd, Trigger, Bump, HitWall, HeadVolumeChange, PhysicsVolumeChange, Falling, BreathTimer, Died, RangedAttack;
+
+  simulated function BeginState()
+  {
+    class'PawnHelper'.static.DisablePawnCollision(self);
+
+    super.BeginState();
+  }
+}
+
+
 defaultproperties
 {
   MenuName="Super Crawler"
