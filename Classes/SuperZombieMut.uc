@@ -22,7 +22,8 @@ struct propertyDescPair
 // Configuration variables that store whether or not to replace the specimen
 var() globalconfig bool bReplaceCrawler, bReplaceStalker, bReplaceClot, bReplaceGorefast, bReplaceBloat, 
                 bReplaceSiren, bReplaceHusk, bReplaceScrake, bReplaceFleshpound, bReplaceBoss;
-var() globalconfig bool forceFpSecret, bareMutatorMode;
+var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance;
+var() globalconfig bool bareMutatorMode;
 
 // Array that stores all the replacement pairs
 var array<oldNewZombiePair> replacementArray;
@@ -177,7 +178,21 @@ function bool CheckReplacement(Actor Other, out byte bSuperRelevant)
     szRI.NextReplicationInfo = pri.CustomReplicationInfo;
     pri.CustomReplicationInfo = szRI;
   }
-  else if (ZombieSuperFP(Other) != none && (forceFpSecret || (KFGameType(Level.Game).KFGameLength != KFGameType(Level.Game).GL_Custom && Level.Game.NumPlayers <= 6)))
+  else if (ZombieSuperClot(Other) != none)
+  {
+    ZombieSuperClot(Other).ignoreBodyShotResistance = disableBodyShotResistance;
+    return true;
+  }
+  else if (ZombieSuperStalker(Other) != none && disableBleeding)
+  {
+    ZombieSuperStalker(Other).MeleeDamage = class'ZombieStalkerBase'.default.MeleeDamage;
+    return true;
+  }
+  else if ((ZombieSuperCrawler(Other) != none && disablePoison))
+  {
+    return true;
+  }
+  else if (ZombieSuperFP(Other) != none && !disableFpSecret)
   {
     ZombieSuperFP(Other).resistances.Length = fpResistances.Length;
     for (i = 0; i < fpResistances.Length; i++)
@@ -203,7 +218,7 @@ static function FillPlayInfo(PlayInfo PlayInfo)
   {
     PlayInfo.AddSetting(mutConfigGroup, default.propDescripArray[i].property, default.propDescripArray[i].shortDescription, 0, 0, "Check");
   }
-  PlayInfo.AddSetting(mutConfigGroup, "forceFpSecret", "Enable fp evolution for sandbox or 7+ player games", 0, 0, "Check",,,,true);
+  PlayInfo.AddSetting(mutConfigGroup, "disableFpSecret", "Disable FP evolution because it sucks", 0, 0, "Check",,,,true);
   PlayInfo.AddSetting(mutConfigGroup, "bareMutatorMode", "Enable bare mutator mode", 0, 0, "Check",,,,true);
 }
 
@@ -222,8 +237,8 @@ static event string GetDescriptionText(string property)
 
   switch (property)
   {
-    case "forceFpSecret":
-      return "By default, fp evolution is disabled for sandbox and 7+ player games since it is intended for normal KF games";
+    case "disableFpSecret":
+      return "FP Evolution mechanics are not obvious for new players and can ruin your game easily. Enable it only if you are 100% sure.";
     case "bareMutatorMode":
       return "Mutator only adds self to package map, manages bleed, poison, and evolution abilities, and sets up HUD effects";
   }
@@ -265,16 +280,20 @@ defaultproperties
   replacementArray(7)=(oldClass="KFChar.ZombieBloat",newClass="SuperZombieMut.ZombieSuperBloat")
   replacementArray(8)=(oldClass="KFChar.ZombieClot",newClass="SuperZombieMut.ZombieSuperClot")
 
-  propDescripArray(0)=(property="bReplaceCrawler",longDescription="Replace Crawlers with Super Crawlers",shortDescription="Replace Crawlers")
-  propDescripArray(1)=(property="bReplaceStalker",longDescription="Replace Stalkers with Super Stalkers",shortDescription="Replace Stalkers")
-  propDescripArray(2)=(property="bReplaceClot",longDescription="Replace Clots with Super Clots",shortDescription="Replace Clots")
-  propDescripArray(3)=(property="bReplaceGorefast",longDescription="Replace Gorefasts with Super Gorefasts",shortDescription="Replace Gorefasts")
-  propDescripArray(4)=(property="bReplaceBloat",longDescription="Replace Bloats with Super Bloats",shortDescription="Replace Bloats")
-  propDescripArray(5)=(property="bReplaceSiren",longDescription="Replace Sirens with Super Sirens",shortDescription="Replace Sirens")
-  propDescripArray(6)=(property="bReplaceHusk",longDescription="Replace Husks with Super Husks",shortDescription="Replace Husks")
-  propDescripArray(7)=(property="bReplaceScrake",longDescription="Replace Scrakes with Super Scrakes",shortDescription="Replace Scrakes")
-  propDescripArray(8)=(property="bReplaceFleshpound",longDescription="Replace Fleshpounds with Super Fleshpounds",shortDescription="Replace Fleshpounds")
-  propDescripArray(9)=(property="bReplaceBoss",longDescription="Replace the Patriarch with the Super Patriarch",shortDescription="Replace Patriarch")
+  propDescripArray(00)=(property="bReplaceCrawler",longDescription="Replace Crawlers with Super Crawlers",shortDescription="Replace Crawlers")
+  propDescripArray(01)=(property="bReplaceStalker",longDescription="Replace Stalkers with Super Stalkers",shortDescription="Replace Stalkers")
+  propDescripArray(02)=(property="bReplaceClot",longDescription="Replace Clots with Super Clots",shortDescription="Replace Clots")
+  propDescripArray(03)=(property="bReplaceGorefast",longDescription="Replace Gorefasts with Super Gorefasts",shortDescription="Replace Gorefasts")
+  propDescripArray(04)=(property="bReplaceBloat",longDescription="Replace Bloats with Super Bloats",shortDescription="Replace Bloats")
+  propDescripArray(05)=(property="bReplaceSiren",longDescription="Replace Sirens with Super Sirens",shortDescription="Replace Sirens")
+  propDescripArray(06)=(property="bReplaceHusk",longDescription="Replace Husks with Super Husks",shortDescription="Replace Husks")
+  propDescripArray(07)=(property="bReplaceScrake",longDescription="Replace Scrakes with Super Scrakes",shortDescription="Replace Scrakes")
+  propDescripArray(08)=(property="bReplaceFleshpound",longDescription="Replace Fleshpounds with Super Fleshpounds",shortDescription="Replace Fleshpounds")
+  propDescripArray(09)=(property="bReplaceBoss",longDescription="Replace the Patriarch with the Super Patriarch",shortDescription="Replace Patriarch")
+  propDescripArray(10)=(Property="disableBleeding",longDescription="Disables bleed effect from stalker attacks and restores their melee damage to normal",shortDescription="I don't have bandages")
+  propDescripArray(11)=(Property="disablePoison",longDescription="Disables poison effect from crawler attacks",shortDescription="I don't have antidotes")
+  propDescripArray(12)=(Property="disableFpSecret",longDescription="Master override to disable fleshpound evolution",shortDescription="I can't adapt")
+  propDescripArray(13)=(Property="disableBodyShotResistance",longDescription="Disables clot resistance to body shots",shortDescription="I can't aim")
 
   bReplaceCrawler=true
   bReplaceStalker=true
