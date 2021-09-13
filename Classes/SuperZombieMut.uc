@@ -22,8 +22,8 @@ struct propertyDescPair
 // Configuration variables that store whether or not to replace the specimen
 var() globalconfig bool bReplaceCrawler, bReplaceStalker, bReplaceClot, bReplaceGorefast, bReplaceBloat, 
                 bReplaceSiren, bReplaceHusk, bReplaceScrake, bReplaceFleshpound, bReplaceBoss;
-var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance;
 var() globalconfig bool bareMutatorMode;
+var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance;
 
 // Array that stores all the replacement pairs
 var array<oldNewZombiePair> replacementArray;
@@ -218,7 +218,6 @@ static function FillPlayInfo(PlayInfo PlayInfo)
   {
     PlayInfo.AddSetting(mutConfigGroup, default.propDescripArray[i].property, default.propDescripArray[i].shortDescription, 0, 0, "Check");
   }
-  PlayInfo.AddSetting(mutConfigGroup, "disableFpSecret", "Disable FP evolution because it sucks", 0, 0, "Check",,,,true);
   PlayInfo.AddSetting(mutConfigGroup, "bareMutatorMode", "Enable bare mutator mode", 0, 0, "Check",,,,true);
 }
 
@@ -237,8 +236,6 @@ static event string GetDescriptionText(string property)
 
   switch (property)
   {
-    case "disableFpSecret":
-      return "FP Evolution mechanics are not obvious for new players and can ruin your game easily. Enable it only if you are 100% sure.";
     case "bareMutatorMode":
       return "Mutator only adds self to package map, manages bleed, poison, and evolution abilities, and sets up HUD effects";
   }
@@ -294,15 +291,4 @@ defaultproperties
   propDescripArray(11)=(Property="disablePoison",longDescription="Disables poison effect from crawler attacks",shortDescription="I don't have antidotes")
   propDescripArray(12)=(Property="disableFpSecret",longDescription="Master override to disable fleshpound evolution",shortDescription="I can't adapt")
   propDescripArray(13)=(Property="disableBodyShotResistance",longDescription="Disables clot resistance to body shots",shortDescription="I can't aim")
-
-  bReplaceCrawler=true
-  bReplaceStalker=true
-  bReplaceClot=true
-  bReplaceGorefast=true
-  bReplaceBloat=true
-  bReplaceSiren=true
-  bReplaceHusk=true
-  bReplaceScrake=true
-  bReplaceFleshpound=true
-  bReplaceBoss=true
 }
