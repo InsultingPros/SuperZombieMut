@@ -4,7 +4,7 @@ class ZombieSuperSiren extends ZombieSiren_STANDARD;
 // Modified the function so the screams hit through doors as well as damaging them
 simulated function SpawnTwoShots()
 {
-  // headless chickens can't cry
+  // ADDITION!!! headless chickens can't cry
   if (bDecapitated)
     return;
 
@@ -13,14 +13,14 @@ simulated function SpawnTwoShots()
   if (Level.NetMode != NM_Client)
   {
     // Deal Actual Damage.
-    if (Controller != None && KFDoorMover(Controller.Target) != None)
+    if (Controller != none && KFDoorMover(Controller.Target) != none)
     {
-      Controller.Target.TakeDamage(ScreamDamage*0.6,Self,Location,vect(0,0,0),ScreamDamageType);
-      HurtRadiusThroughDoor(ScreamDamage*0.6 ,ScreamRadius, ScreamDamageType, ScreamForce, Location);
+      Controller.Target.TakeDamage(ScreamDamage * 0.6, self, Location, vect(0,0,0), ScreamDamageType);
+      HurtRadiusThroughDoor(ScreamDamage * 0.6, ScreamRadius, ScreamDamageType, ScreamForce, Location);
     }
     else
     {
-      HurtRadiusThroughDoor(ScreamDamage ,ScreamRadius, ScreamDamageType, ScreamForce, Location);
+      HurtRadiusThroughDoor(ScreamDamage, ScreamRadius, ScreamDamageType, ScreamForce, Location);
     }
   }
 }
@@ -74,7 +74,7 @@ simulated function HurtRadiusThroughDoor(float DamageAmount, float DamageRadius,
       Victims.TakeDamage(damageScale * UsedDamageAmount, self, Victims.Location - 0.5 * (Victims.CollisionHeight + Victims.CollisionRadius) * dir,
                 (damageScale * UsedMomentum * dir),DamageType);
 
-      if (Instigator != None && Vehicle(Victims) != None && Vehicle(Victims).Health > 0)
+      if (Instigator != none && Vehicle(Victims) != none && Vehicle(Victims).Health > 0)
         Vehicle(Victims).DriverRadiusDamage(UsedDamageAmount, DamageRadius, Instigator.Controller, DamageType, UsedMomentum, HitLocation);
     }
   }

@@ -21,7 +21,7 @@ struct propertyDescPair
 
 // Configuration variables that store whether or not to replace the specimen
 var() globalconfig bool bReplaceCrawler, bReplaceStalker, bReplaceClot, bReplaceGorefast, bReplaceBloat, 
-                bReplaceSiren, bReplaceHusk, bReplaceScrake, bReplaceFleshpound, bReplaceBoss;
+                        bReplaceSiren, bReplaceHusk, bReplaceScrake, bReplaceFleshpound, bReplaceBoss;
 var() globalconfig bool bareMutatorMode;
 var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance;
 
@@ -47,7 +47,7 @@ function replaceSpecialSquad(out array<KFMonstersCollection.SpecialSquad> squadA
     {
       for (k = 0; k < replacementArray.Length; k++)
       {
-        if(replacementArray[k].bReplace && InStr(Caps(squadArray[j].ZedClass[i]), replCaps[k]) != -1)
+        if (replacementArray[k].bReplace && InStr(Caps(squadArray[j].ZedClass[i]), replCaps[k]) != -1)
         {
           squadArray[j].ZedClass[i] = replacementArray[k].newClass;
         }
@@ -160,6 +160,11 @@ function PostBeginPlay()
   for (i = 0; i < KF.SpecialEventMonsterCollections.Length; i++)
   {
     KF.SpecialEventMonsterCollections[i] = KF.MonsterCollection;
+  }
+
+  if (bReplaceSiren)
+  {
+    class'ZombieSuperSiren'.default.bPullThroughWalls = true;
   }
 }
 
