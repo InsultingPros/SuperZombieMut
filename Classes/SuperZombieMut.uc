@@ -23,7 +23,7 @@ struct propertyDescPair
 var() globalconfig bool bReplaceCrawler, bReplaceStalker, bReplaceClot, bReplaceGorefast, bReplaceBloat, 
                         bReplaceSiren, bReplaceHusk, bReplaceScrake, bReplaceFleshpound, bReplaceBoss;
 var() globalconfig bool bareMutatorMode;
-var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance, bPullThroughWalls;
+var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance, bPullThroughWalls, bDisableSCMeleeFlinch;
 
 // Array that stores all the replacement pairs
 var array<oldNewZombiePair> replacementArray;
@@ -145,21 +145,28 @@ function PostBeginPlay()
   replaceSpecialSquad(KF.MonsterCollection.default.LongSpecialSquads);
   replaceSpecialSquad(KF.MonsterCollection.default.FinalSquads);
 
-  // use alternative pull effect
-  if (bReplaceSiren && bPullThroughWalls)
-  {
-    class'ZombieSuperSiren'.default.bPullThroughWalls = true;
-  }
-
   // no more hardcoded strings
   if (bReplaceBoss)
   {
     KF.MonsterCollection.default.EndGameBossClass = string(class'ZombieSuperBoss');
   }
 
+  // no more hardcoded strings
   if (bReplaceStalker)
   {
     KF.MonsterCollection.default.FallbackMonsterClass = string(class'ZombieSuperStalker');
+  }
+
+  // let people to do their melee flinch combos as a non zerk..
+  if (bReplaceScrake && bDisableSCMeleeFlinch)
+  {
+    class'ZombieSuperScrake'.default.bDisableSCMeleeFlinch = true;
+  }
+
+  // use alternative pull effect
+  if (bReplaceSiren && bPullThroughWalls)
+  {
+    class'ZombieSuperSiren'.default.bPullThroughWalls = true;
   }
 
   // reset KF events to our SZMonstersCollection
@@ -298,4 +305,5 @@ defaultproperties
   propDescripArray(12)=(property="disableFpSecret",longDescription="Master override to disable fleshpound evolution",shortDescription="I can't adapt")
   propDescripArray(13)=(property="disableBodyShotResistance",longDescription="Disables clot resistance to body shots",shortDescription="I can't aim")
   propDescripArray(14)=(property="bPullThroughWalls",longDescription="Allows siren to pull you through walls",shortDescription="Siren alternative pull")
+  propDescripArray(15)=(property="bDisableSCMeleeFlinch",longDescription="Disallow offperk mini flinches to scrakes and cancel most sup / mando combos",shortDescription="Disallow scrake offperk melee flinches")
 }

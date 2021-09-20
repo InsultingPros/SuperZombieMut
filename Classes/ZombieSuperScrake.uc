@@ -1,10 +1,12 @@
 class ZombieSuperScrake extends ZombieScrake_STANDARD;
 
 
-// maxTimesFlipOver    How many times the scrake can be stunned.  When it is -1, the the scrake cannot be stunned
+// maxTimesFlipOver:  How many times the scrake can be stunned.  When it is -1, the the scrake cannot be stunned
 var int maxTimesFlipOver;
-// bIsFlippedOver  True if the scrake is flipped over, i.e. stunned
+// bIsFlippedOver:  True if the scrake is flipped over, i.e. stunned
 var bool bIsFlippedOver;
+// bDisabSCleMeleeFlinch:  disallow offperk mini flinches to scrakes and cancel most sup / mando combos
+var bool bDisableSCMeleeFlinch;
 
 
 // Changed so the scrake only flips over a fixed number of times
@@ -58,6 +60,13 @@ function PlayDirectionalHit(Vector HitLoc)
   local KFPawn KFP;
   local bool bCanMeleeFlinch;
 
+  // cut this if we don't want to punish sup, mando combos
+  if (!bDisableSCMeleeFlinch)
+  {
+    super.PlayDirectionalHit(HitLoc);
+    return;
+  }
+
   GetAxes(Rotation, X,Y,Z);
   HitLoc.Z = Location.Z;
   Dir = -Normal(Location - HitLoc);
@@ -68,8 +77,8 @@ function PlayDirectionalHit(Vector HitLoc)
   }
 
   KFP = KFPawn(LastDamagedBy);
-  bCanMeleeFlinch = (VSize(LastDamagedBy.Location - Location) <= (MeleeRange * 2) && ClassIsChildOf(LastDamagedbyType,class 'DamTypeMelee') &&
-                 KFP != none && KFPlayerReplicationInfo(KFP.OwnerPRI).ClientVeteranSkill.Static.CanMeleeStun() && LastDamageAmount > (0.10 * default.Health));
+  bCanMeleeFlinch = (VSize(LastDamagedBy.Location - Location) <= (MeleeRange * 2) && ClassIsChildOf(LastDamagedbyType, class 'DamTypeMelee') &&
+                 KFP != none && KFPlayerReplicationInfo(KFP.OwnerPRI).ClientVeteranSkill.static.CanMeleeStun() && LastDamageAmount > (0.10 * default.Health));
 
   // random
   if (VSize(Location - HitLoc) < 1.0)
@@ -130,4 +139,5 @@ defaultproperties
   MenuName="Super Scrake"
   maxTimesFlipOver=1
   bIsFlippedOver=false
+  bDisableSCMeleeFlinch=false
 }
