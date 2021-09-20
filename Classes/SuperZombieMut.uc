@@ -23,7 +23,7 @@ struct propertyDescPair
 var() globalconfig bool bReplaceCrawler, bReplaceStalker, bReplaceClot, bReplaceGorefast, bReplaceBloat, 
                         bReplaceSiren, bReplaceHusk, bReplaceScrake, bReplaceFleshpound, bReplaceBoss;
 var() globalconfig bool bareMutatorMode;
-var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance;
+var() globalconfig bool disableBleeding, disablePoison, disableFpSecret, disableBodyShotResistance, bPullThroughWalls;
 
 // Array that stores all the replacement pairs
 var array<oldNewZombiePair> replacementArray;
@@ -145,6 +145,12 @@ function PostBeginPlay()
   replaceSpecialSquad(KF.MonsterCollection.default.LongSpecialSquads);
   replaceSpecialSquad(KF.MonsterCollection.default.FinalSquads);
 
+  // use alternative pull effect
+  if (bReplaceSiren && bPullThroughWalls)
+  {
+    class'ZombieSuperSiren'.default.bPullThroughWalls = true;
+  }
+
   // no more hardcoded strings
   if (bReplaceBoss)
   {
@@ -160,11 +166,6 @@ function PostBeginPlay()
   for (i = 0; i < KF.SpecialEventMonsterCollections.Length; i++)
   {
     KF.SpecialEventMonsterCollections[i] = KF.MonsterCollection;
-  }
-
-  if (bReplaceSiren)
-  {
-    class'ZombieSuperSiren'.default.bPullThroughWalls = true;
   }
 }
 
@@ -292,8 +293,9 @@ defaultproperties
   propDescripArray(07)=(property="bReplaceScrake",longDescription="Replace Scrakes with Super Scrakes",shortDescription="Replace Scrakes")
   propDescripArray(08)=(property="bReplaceFleshpound",longDescription="Replace Fleshpounds with Super Fleshpounds",shortDescription="Replace Fleshpounds")
   propDescripArray(09)=(property="bReplaceBoss",longDescription="Replace the Patriarch with the Super Patriarch",shortDescription="Replace Patriarch")
-  propDescripArray(10)=(Property="disableBleeding",longDescription="Disables bleed effect from stalker attacks and restores their melee damage to normal",shortDescription="I don't have bandages")
-  propDescripArray(11)=(Property="disablePoison",longDescription="Disables poison effect from crawler attacks",shortDescription="I don't have antidotes")
-  propDescripArray(12)=(Property="disableFpSecret",longDescription="Master override to disable fleshpound evolution",shortDescription="I can't adapt")
-  propDescripArray(13)=(Property="disableBodyShotResistance",longDescription="Disables clot resistance to body shots",shortDescription="I can't aim")
+  propDescripArray(10)=(property="disableBleeding",longDescription="Disables bleed effect from stalker attacks and restores their melee damage to normal",shortDescription="I don't have bandages")
+  propDescripArray(11)=(property="disablePoison",longDescription="Disables poison effect from crawler attacks",shortDescription="I don't have antidotes")
+  propDescripArray(12)=(property="disableFpSecret",longDescription="Master override to disable fleshpound evolution",shortDescription="I can't adapt")
+  propDescripArray(13)=(property="disableBodyShotResistance",longDescription="Disables clot resistance to body shots",shortDescription="I can't aim")
+  propDescripArray(14)=(property="bPullThroughWalls",longDescription="Allows siren to pull you through walls",shortDescription="Siren alternative pull")
 }
