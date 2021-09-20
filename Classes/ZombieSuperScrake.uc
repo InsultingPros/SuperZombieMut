@@ -1,5 +1,6 @@
 class ZombieSuperScrake extends ZombieScrake_STANDARD;
 
+
 // maxTimesFlipOver    How many times the scrake can be stunned.  When it is -1, the the scrake cannot be stunned
 var int maxTimesFlipOver;
 // bIsFlippedOver  True if the scrake is flipped over, i.e. stunned
@@ -38,7 +39,7 @@ function TakeDamage(int Damage, Pawn InstigatedBy, Vector Hitlocation, Vector Mo
     bIsHeadShot = IsHeadShot(Hitlocation, normal(Momentum), 1.0);
   }
   super.takeDamage(Damage, instigatedBy, hitLocation, momentum, damageType, HitIndex);
-    
+
   // Break stun if the scrake is hit with a weak attack or not head shotted with an attack that can head shot
   if (bIsFlippedOver && Health > 0 && (!bIsHeadShot && class<KFWeaponDamageType>(damageType) != none && 
             class<KFWeaponDamageType>(damageType).default.bCheckForHeadShots || (oldHealth - Health) * 1.5 <= (float(Default.Health))))
@@ -98,7 +99,29 @@ function PlayDirectionalHit(Vector HitLoc)
     SetAnimAction(KFHitBack);
   else if (Dir Dot Y > 0)
     SetAnimAction(KFHitRight);
-  else SetAnimAction(KFHitLeft);
+  else
+    SetAnimAction(KFHitLeft);
+}
+
+
+// aleat0r (c) http://steamcommunity.com/profiles/76561198065101703 
+// slow rage and easy attack avoiding fix #1
+state RunningState
+{
+  simulated function float GetOriginalGroundSpeed()
+  {
+    return 3.5 * OriginalGroundSpeed;
+  }
+}
+
+
+// slow rage and easy attack avoiding fix #2
+state SawingLoop
+{
+  simulated function float GetOriginalGroundSpeed()
+  {
+    return OriginalGroundSpeed * AttackChargeRate;
+  }
 }
 
 

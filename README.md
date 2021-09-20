@@ -64,7 +64,7 @@ The source code is available on the project's GitHub page
 ## Change Log
 
 To view a detailed change log, please view the releaes notes for the specific version:  
-<https://github.com/scaryghost/SuperZombieMut/releases/tag/2.3.2>
+<https://github.com/scaryghost/SuperZombieMut/releases/>
 
 A complete list of specimen changes maybe viewed on the mutator's wiki:  
 <https://github.com/scaryghost/SuperZombieMut/wiki>
