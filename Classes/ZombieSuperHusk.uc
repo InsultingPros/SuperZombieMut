@@ -124,5 +124,5 @@ function RangedAttack(Actor A)
 defaultproperties
 {
   MenuName="Super Husk"
-  ControllerClass=class'SuperHuskZombieController'
+  ControllerClass=class'ctrl_ZombieSuperHusk'
 }

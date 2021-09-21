@@ -483,6 +483,6 @@ defaultproperties
   MenuName="Super Patriarch"
   ChargeDamageThreshold=1000
   bJustSpawned=true
-  ControllerClass=class'ZombieSuperBossController'
+  ControllerClass=class'ctrl_ZombieSuperBoss'
   ImpaleMeleeDamageRange=75
 }

@@ -1,4 +1,4 @@
-class ZombieSuperBossController extends BossZombieController;
+class ctrl_ZombieSuperBoss extends BossZombieController;
 
 
 // Randomly decide which criteria to use when selecting enemy

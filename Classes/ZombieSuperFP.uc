@@ -106,7 +106,7 @@ function bool MeleeDamageTarget(int hitdamage, vector pushdir)
   local bool didIHit;
 
   didIHit = super.MeleeDamageTarget(hitdamage, pushdir);
-  SuperFPZombieController(Controller).bMissTarget = SuperFPZombieController(Controller).bMissTarget || !didIHit;
+  ctrl_ZombieSuperFP(Controller).bMissTarget = ctrl_ZombieSuperFP(Controller).bMissTarget || !didIHit;
   return didIHit;
 }
 
@@ -115,7 +115,7 @@ function bool MeleeDamageTarget(int hitdamage, vector pushdir)
 simulated event SetAnimAction(name NewAction)
 {
   super.SetAnimAction(newAction);
-  SuperFPZombieController(Controller).bAttackedTarget = (NewAction == 'Claw') || (NewAction == 'DoorBash');
+  ctrl_ZombieSuperFP(Controller).bAttackedTarget = (NewAction == 'Claw') || (NewAction == 'DoorBash');
 }
 
 
@@ -226,6 +226,6 @@ Begin:
 defaultproperties
 {
   MenuName="Super FleshPound"
-  ControllerClass=class'SuperFPZombieController'
+  ControllerClass=class'ctrl_ZombieSuperFP'
   totalDamageRageThreshold=1440
 }

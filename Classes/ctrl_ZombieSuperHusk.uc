@@ -1,4 +1,4 @@
-class SuperHuskZombieController extends HuskZombieController;
+class ctrl_ZombieSuperHusk extends HuskZombieController;
 
 
 var float aimAtFeetZDelta;

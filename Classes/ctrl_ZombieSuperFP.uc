@@ -1,4 +1,4 @@
-class SuperFPZombieController extends FleshpoundZombieController;
+class ctrl_ZombieSuperFP extends FleshpoundZombieController;
 
 
 // bFindNewEnemy       true if the flehspound is searching for a new target
