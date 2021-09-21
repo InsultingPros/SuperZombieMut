@@ -24,6 +24,10 @@ var int totalDamageRageThreshold, totalRageAccumulator;
 simulated function PostBeginPlay()
 {
   super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+
   rageDamageLimit = Max(35.0 * 1.75 * DifficultyDamageModifer(), 1.0);
   rageShieldLimit = Max(45.0 * DifficultyDamageModifer(), 1.0);
 }

@@ -9,6 +9,15 @@ var bool bIsFlippedOver;
 var bool bDisableSCMeleeFlinch;
 
 
+simulated function PostBeginPlay()
+{
+  super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+}
+
+
 // Changed so the scrake only flips over a fixed number of times
 function bool FlipOver()
 {

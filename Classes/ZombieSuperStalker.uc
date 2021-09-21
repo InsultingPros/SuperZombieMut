@@ -1,6 +1,15 @@
 class ZombieSuperStalker extends ZombieStalker_STANDARD;
 
 
+simulated function PostBeginPlay()
+{
+  super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+}
+
+
 // Changed the Tick function to match the gorefasts, so she can do a moving melee attack
 simulated function Tick(float DeltaTime)
 {

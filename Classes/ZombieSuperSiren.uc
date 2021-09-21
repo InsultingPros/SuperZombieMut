@@ -5,6 +5,15 @@ class ZombieSuperSiren extends ZombieSiren_STANDARD;
 var bool bPullThroughWalls;
 
 
+simulated function PostBeginPlay()
+{
+  super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+}
+
+
 // Modified the function so the screams hit through doors as well as damaging them
 simulated function SpawnTwoShots()
 {

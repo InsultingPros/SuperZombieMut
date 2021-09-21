@@ -15,6 +15,15 @@ var bool bJustSpawned;
 var float spawnTimer, attackPipeCoolDown, LastDamageTime2, ChargeDamage2;
 
 
+simulated function PostBeginPlay()
+{
+  super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+}
+
+
 // Give the patriarch more to do during each tick
 simulated function Tick(float DeltaTime)
 {

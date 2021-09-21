@@ -4,6 +4,10 @@ class ZombieSuperCrawler extends ZombieCrawler_STANDARD;
 simulated function PostBeginPlay()
 {
   super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+
   PounceSpeed = Rand(221) + 330;
   MeleeRange = Rand(41) + 50;
 }

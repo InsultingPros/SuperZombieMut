@@ -7,6 +7,15 @@ var int grappleLimit;
 var bool ignoreBodyShotResistance;
 
 
+simulated function PostBeginPlay()
+{
+  super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+}
+
+
 function detachFromTarget()
 {
   if (DisabledPawn != none && disabledPawnRepInfo != none)

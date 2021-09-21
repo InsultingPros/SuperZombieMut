@@ -5,6 +5,15 @@ class ZombieSuperGorefast extends ZombieGoreFast_STANDARD;
 var float minRageDist;
 
 
+simulated function PostBeginPlay()
+{
+  super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+}
+
+
 function RangedAttack(Actor A)
 {
   super(KFMonster).RangedAttack(A);

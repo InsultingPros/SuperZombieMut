@@ -6,9 +6,15 @@ class ZombieSuperHusk extends ZombieHusk_STANDARD;
 var int consecutiveShots, maxConsecutiveShots;
 
 
+
+
 simulated function PostBeginPlay()
 {
   super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+
   maxConsecutiveShots = Rand(5) + 1;
 }
 

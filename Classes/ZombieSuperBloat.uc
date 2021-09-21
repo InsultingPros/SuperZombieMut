@@ -9,6 +9,15 @@ var bool bAmIBarfing;
 var float bileCoolDownTimer, bileCoolDownMax;
 
 
+simulated function PostBeginPlay()
+{
+  super.PostBeginPlay();
+
+  // fix laser sights
+  class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
+}
+
+
 // Spawn extra sets of bile pellets here once the bile cool down timer
 // has reached the max limit
 simulated function Tick(float DeltaTime)
