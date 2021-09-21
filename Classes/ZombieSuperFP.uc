@@ -123,50 +123,53 @@ simulated event SetAnimAction(name NewAction)
 // rage again if he doesn't deal out enough damage.
 state RageCharging
 {
-/**
- *  Not sure why we are Ignoring StartCharging()
- *  but best leave the code as is
- */
+// Not sure why we are Ignoring StartCharging()
+// but best leave the code as is
 Ignores StartCharging;
-    function bool MeleeDamageTarget(int hitdamage, vector pushdir) {
-        local bool RetVal,bWasEnemy;
-        local float oldEnemyHealth, oldEnemyShield;
-        local bool bAttackingHuman;
+  
+  function bool MeleeDamageTarget(int hitdamage, vector pushdir)
+  {
+    local bool RetVal,bWasEnemy;
+    local float oldEnemyHealth, oldEnemyShield;
+    local bool bAttackingHuman;
 
-        //Only rage again if he was attacking a human
-        bAttackingHuman= (KFHumanPawn(Controller.Target) != none);
+    // Only rage again if he was attacking a human
+    bAttackingHuman = (KFHumanPawn(Controller.Target) != none);
 
-        if (bAttackingHuman) {
-            oldEnemyHealth= KFHumanPawn(Controller.Target).Health;
-            oldEnemyShield= KFHumanPawn(Controller.Target).ShieldStrength;
-        }
-
-        bWasEnemy = (Controller.Target==Controller.Enemy);
-        RetVal = Super(KFMonster).MeleeDamageTarget(hitdamage*1.75, pushdir*3);
-
-        if (bAttackingHuman) {
-            rageDamage+= oldEnemyHealth - KFHumanPawn(Controller.Target).Health;
-            rageShield+= oldEnemyShield - KFHumanPawn(Controller.Target).ShieldStrength;
-        }
-
-       
-        if(RetVal && bWasEnemy) {
-            /**
-             *  If we haven't reached our damage threshold, rage again, 
-             *  otherwise reset the accumulators
-             */
-            if(bAttackingHuman && (oldEnemyShield <= 0.0 && rageDamage < rageDamageLimit || 
-                (rageShield < rageShieldLimit && rageDamage < rageDamageLimit * 0.175))) {
-                GotoState('RageAgain');
-            } else {
-                rageDamage= 0.0;
-                rageShield= 0.0;
-                GoToState('');
-            }
-        }
-
-        return RetVal;
+    if (bAttackingHuman)
+    {
+      oldEnemyHealth = KFHumanPawn(Controller.Target).Health;
+      oldEnemyShield = KFHumanPawn(Controller.Target).ShieldStrength;
     }
+
+    bWasEnemy = (Controller.Target==Controller.Enemy);
+    RetVal = Super(KFMonster).MeleeDamageTarget(hitdamage*1.75, pushdir*3);
+
+    if (bAttackingHuman)
+    {
+      rageDamage += oldEnemyHealth - KFHumanPawn(Controller.Target).Health;
+      rageShield += oldEnemyShield - KFHumanPawn(Controller.Target).ShieldStrength;
+    }
+
+    if (RetVal && bWasEnemy)
+    {
+      // If we haven't reached our damage threshold, rage again, 
+      // otherwise reset the accumulators
+      if (bAttackingHuman && (oldEnemyShield <= 0.0 && rageDamage < rageDamageLimit || 
+          (rageShield < rageShieldLimit && rageDamage < rageDamageLimit * 0.175)))
+      {
+        GotoState('RageAgain');
+      }
+      else
+      {
+        rageDamage = 0.0;
+        rageShield = 0.0;
+        GoToState('');
+      }
+    }
+
+    return RetVal;
+  }
 }
 
 
@@ -197,10 +200,10 @@ state RageAgain
       rageShield += oldEnemyShield - KFHumanPawn(Controller.Target).ShieldStrength;
     }
 
-    if(RetVal && bWasEnemy)
+    if (RetVal && bWasEnemy)
     {
       if (bAttackingHuman && (oldEnemyShield <= 0.0 && rageDamage < rageDamageLimit || 
-                (rageShield < rageShieldLimit && rageDamage < rageDamageLimit * 0.175)))
+          (rageShield < rageShieldLimit && rageDamage < rageDamageLimit * 0.175)))
       {
         StartCharging();
       }

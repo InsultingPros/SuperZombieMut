@@ -55,13 +55,13 @@ function tick(float DeltaTime)
   {
     if (bleedState.nextBleedTime < Level.TimeSeconds)
     {
-            bleedState.count--;
-            bleedState.nextBleedTime+= bleedPeriod;
-            ownerCtrllr.Pawn.TakeDamage(2, bleedState.instigator, ownerCtrllr.Pawn.Location, 
-                    vect(0, 0, 0), class'DamTypeStalkerBleed');
-            if (ownerCtrllr.Pawn.isA('KFPawn')) {
-                KFPawn(ownerCtrllr.Pawn).HealthToGive-= 5;
-            }
+      bleedState.count--;
+      bleedState.nextBleedTime+= bleedPeriod;
+      ownerCtrllr.Pawn.TakeDamage(2, bleedState.instigator, ownerCtrllr.Pawn.Location, vect(0, 0, 0), class'DamTypeStalkerBleed');
+      if (ownerCtrllr.Pawn.isA('KFPawn'))
+      {
+        KFPawn(ownerCtrllr.Pawn).HealthToGive -= 5;
+      }
     }
   }
   else
