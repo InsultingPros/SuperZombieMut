@@ -14,7 +14,7 @@ final static function SpawnClientExtendedZCollision(KFMonster M)
     {
       M.MyExtCollision = M.spawn(class'ClientExtendedZCollision', M);
       // slightly smaller version for non auth clients
-      M.MyExtCollision.SetCollisionSize(M.ColRadius * 0.9f, M.ColHeight * 0.9f);
+      M.MyExtCollision.SetCollisionSize(M.ColRadius, M.ColHeight);
 
       M.MyExtCollision.bHardAttach = true;
       M.MyExtCollision.SetLocation(M.Location + (M.ColOffset >> M.Rotation));
