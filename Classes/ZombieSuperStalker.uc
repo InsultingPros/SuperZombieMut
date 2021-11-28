@@ -103,23 +103,27 @@ function bool MeleeDamageTarget(int hitdamage, vector pushdir)
 
 
 // STUNNED stalkers can NOT play hit animations
-// function bool FlipOver()
-// {
-//   if (Physics == PHYS_Falling)
-//   {
-//     SetPhysics(PHYS_Walking);
-//   }
+function bool FlipOver()
+{
+  if (Physics == PHYS_Falling)
+  {
+    SetPhysics(PHYS_Walking);
+  }
 
-//   bShotAnim = true;
-//   SetAnimAction('KnockDown');
-//   Acceleration = vect(0, 0, 0);
-//   Velocity.X = 0;
-//   Velocity.Y = 0;
-//   Controller.GoToState('WaitForAnim');
-//   KFMonsterController(Controller).bUseFreezeHack = true;
+  bShotAnim = true;
+  
+  // YAY!!!! just anim settings this manually
+  AnimBlendParams(1, 0.5, 0.0,, FireRootBone);
+  PlayAnim('KnockDown',, 0.1, 1);
+  // SetAnimAction('KnockDown');
+  Acceleration = vect(0, 0, 0);
+  Velocity.X = 0;
+  Velocity.Y = 0;
+  Controller.GoToState('WaitForAnim');
+  KFMonsterController(Controller).bUseFreezeHack = true;
 
-//   return true;
-// }
+  return true;
+}
 
 
 defaultproperties

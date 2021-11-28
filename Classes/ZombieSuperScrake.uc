@@ -132,12 +132,12 @@ final private function bool bCanMeleeFlinch(KFPawn KFP)
       KFP != none && KFPlayerReplicationInfo(KFP.OwnerPRI).ClientVeteranSkill.static.CanMeleeStun() &&
       LastDamageAmount > (0.10 * default.Health))
   {
-    StopWatch(true);
+    // StopWatch(true);
     return true;
   }
   else
   {
-    StopWatch(true);
+    // StopWatch(true);
     return false;
   }
 }
