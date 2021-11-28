@@ -18,6 +18,13 @@ simulated function PostBeginPlay()
 }
 
 
+// TEST!!!
+// function bool IsHeadShot(vector loc, vector ray, float AdditionalScale)
+// {
+//   return class'PawnHelper'.static.IsHeadShot(self, loc, ray, AdditionalScale, vect(0, 0, 0));
+// }
+
+
 // Changed so the scrake only flips over a fixed number of times
 function bool FlipOver()
 {
@@ -29,6 +36,7 @@ function bool FlipOver()
   maxTimesFlipOver--;
   bCalledFlipOver = ((bShotAnim && (Sequence == 'KnockDown' || Sequence == 'SawZombieIdle') || maxTimesFlipOver >= 0) && super.FlipOver());
   bIsFlippedOver = bIsFlippedOver || bCalledFlipOver;
+
   return bCalledFlipOver;
 }
 
@@ -65,9 +73,7 @@ function TakeDamage(int Damage, Pawn InstigatedBy, Vector Hitlocation, Vector Mo
 
 function PlayDirectionalHit(Vector HitLoc)
 {
-  local Vector X,Y,Z, Dir;
-  local KFPawn KFP;
-  local bool bCanMeleeFlinch;
+  local Vector X, Y, Z, Dir;
 
   // cut this if we don't want to punish sup, mando combos
   if (!bDisableSCMeleeFlinch)
@@ -85,10 +91,6 @@ function PlayDirectionalHit(Vector HitLoc)
     return;
   }
 
-  KFP = KFPawn(LastDamagedBy);
-  bCanMeleeFlinch = (VSize(LastDamagedBy.Location - Location) <= (MeleeRange * 2) && ClassIsChildOf(LastDamagedbyType, class 'DamTypeMelee') &&
-                 KFP != none && KFPlayerReplicationInfo(KFP.OwnerPRI).ClientVeteranSkill.static.CanMeleeStun() && LastDamageAmount > (0.10 * default.Health));
-
   // random
   if (VSize(Location - HitLoc) < 1.0)
     Dir = VRand();
@@ -99,7 +101,8 @@ function PlayDirectionalHit(Vector HitLoc)
   {
     if (LastDamagedBy != none && LastDamageAmount > 0 && StunsRemaining != 0)
     {
-      if (LastDamageAmount >= (0.5 * default.Health) || bCanMeleeFlinch)
+      // StopWatch(false);
+      if (LastDamageAmount >= (0.5 * default.Health) || bCanMeleeFlinch(KFPawn(LastDamagedBy)))
       {
         SetAnimAction(HitAnims[Rand(3)]);
         bSTUNNED = true;
@@ -119,6 +122,24 @@ function PlayDirectionalHit(Vector HitLoc)
     SetAnimAction(KFHitRight);
   else
     SetAnimAction(KFHitLeft);
+}
+
+
+final private function bool bCanMeleeFlinch(KFPawn KFP)
+{
+
+  if (VSize(LastDamagedBy.Location - Location) <= (MeleeRange * 2) && ClassIsChildOf(LastDamagedbyType, class 'DamTypeMelee') &&
+      KFP != none && KFPlayerReplicationInfo(KFP.OwnerPRI).ClientVeteranSkill.static.CanMeleeStun() &&
+      LastDamageAmount > (0.10 * default.Health))
+  {
+    StopWatch(true);
+    return true;
+  }
+  else
+  {
+    StopWatch(true);
+    return false;
+  }
 }
 
 

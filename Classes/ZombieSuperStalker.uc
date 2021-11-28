@@ -74,7 +74,7 @@ simulated function int AttackAndMoveDoAnimAction(name AnimName)
     AnimName = meleeAnims[meleeAnimIndex];
     CurrentDamtype = ZombieDamType[meleeAnimIndex];
 
-    duration= GetAnimDuration(AnimName, 1.0);
+    duration = GetAnimDuration(AnimName, 1.0);
   }
 
   if (AnimName == 'StalkerSpinAttack' || AnimName == 'StalkerAttack1' || AnimName == 'JumpAttack')
@@ -100,6 +100,26 @@ function bool MeleeDamageTarget(int hitdamage, vector pushdir)
   }
   return result;
 }
+
+
+// STUNNED stalkers can NOT play hit animations
+// function bool FlipOver()
+// {
+//   if (Physics == PHYS_Falling)
+//   {
+//     SetPhysics(PHYS_Walking);
+//   }
+
+//   bShotAnim = true;
+//   SetAnimAction('KnockDown');
+//   Acceleration = vect(0, 0, 0);
+//   Velocity.X = 0;
+//   Velocity.Y = 0;
+//   Controller.GoToState('WaitForAnim');
+//   KFMonsterController(Controller).bUseFreezeHack = true;
+
+//   return true;
+// }
 
 
 defaultproperties

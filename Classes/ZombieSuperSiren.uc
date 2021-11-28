@@ -28,7 +28,7 @@ simulated function SpawnTwoShots()
     // Deal Actual Damage.
     if (Controller != none && KFDoorMover(Controller.Target) != none)
     {
-      Controller.Target.TakeDamage(ScreamDamage * 0.6, self, Location, vect(0,0,0), ScreamDamageType);
+      Controller.Target.TakeDamage(ScreamDamage * 0.6, self, Location, vect(0, 0, 0), ScreamDamageType);
       if (bPullThroughWalls)
         HurtRadiusThroughDoor(ScreamDamage * 0.6, ScreamRadius, ScreamDamageType, ScreamForce, Location);
     }
@@ -146,6 +146,30 @@ simulated function HurtRadius(float DamageAmount, float DamageRadius, class<Dama
     }
   }
   bHurtEntry = false;
+}
+
+
+// DEAD sirens can NOT spawn scream emitter 
+simulated function PlayDying(class<DamageType> DamageType, vector HitLoc)
+{
+  super.PlayDying(DamageType, HitLoc);
+
+  // yea, stop all animations on dead zed
+  StopAnimating();
+}
+
+
+state ZombieDying
+{
+ignores AnimEnd, Trigger, Bump, HitWall, HeadVolumeChange, PhysicsVolumeChange, Falling, BreathTimer, Died, RangedAttack;
+
+  simulated function BeginState()
+  {
+    // yea, stop all animations on dead zed
+    StopAnimating();
+
+    super.BeginState();
+  }
 }
 
 
