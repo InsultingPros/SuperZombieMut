@@ -65,4 +65,30 @@ defaultproperties
   MenuName="Super Crawler"
   GroundSpeed=190.00000
   WaterSpeed=175.00000
+  // Crawler does not have "Jump" animation
+  // source: https://github.com/poosh/KF-ScrnZedPack/blob/master/Classes/ZedBaseCrawler.uc
+  TakeoffAnims(0)="ZombieSpring"
+  TakeoffAnims(1)="ZombieSpring"
+  TakeoffAnims(2)="ZombieSpring"
+  TakeoffAnims(3)="ZombieSpring"
+  AirAnims(0)="ZombieLeapIdle"
+  AirAnims(1)="ZombieLeapIdle"
+  AirAnims(2)="ZombieLeapIdle"
+  AirAnims(3)="ZombieLeapIdle"
+  LandAnims(0)="Landed"
+  LandAnims(1)="Landed"
+  LandAnims(2)="Landed"
+  LandAnims(3)="Landed"
+  AirStillAnim="Jump2"
+  TakeoffStillAnim="ZombieSpring"
+
+  // these should not use but just in case
+  DoubleJumpAnims(0)="ZombieSpring"
+  DoubleJumpAnims(1)="ZombieSpring"
+  DoubleJumpAnims(2)="ZombieSpring"
+  DoubleJumpAnims(3)="ZombieSpring"
+  DodgeAnims(0)="ZombieSpring"
+  DodgeAnims(1)="ZombieSpring"
+  DodgeAnims(2)="ZombieSpring"
+  DodgeAnims(3)="ZombieSpring"
 }
