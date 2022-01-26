@@ -6,11 +6,18 @@ class ZombieSuperHusk extends ZombieHusk_STANDARD;
 var int consecutiveShots, maxConsecutiveShots;
 
 
+// MyAmmo spawns from AmmunitionClass! just change it!
+// var class<Ammunition> AmmunitionClass;
+// var Ammunition MyAmmo;
 
 
 simulated function PostBeginPlay()
 {
   super.PostBeginPlay();
+
+  // and why TWI removed this feature...
+  if (Controller != none)
+		MyAmmo = spawn(AmmunitionClass);
 
   // fix laser sights
   class'PawnHelper'.static.SpawnClientExtendedZCollision(self);
@@ -40,14 +47,14 @@ function SpawnTwoShots()
 
   if (!SavedFireProperties.bInitialized)
   {
-    SavedFireProperties.AmmoClass = class'SkaarjAmmo';
-    SavedFireProperties.ProjectileClass = class'HuskFireProjectile_SZ';
-    SavedFireProperties.WarnTargetPct = 1;
-    SavedFireProperties.MaxRange = 65535;
-    SavedFireProperties.bTossed = false;
-    SavedFireProperties.bTrySplash = true;
-    SavedFireProperties.bLeadTarget = true;
-    SavedFireProperties.bInstantHit = false;
+    SavedFireProperties.AmmoClass = MyAmmo.Class;
+    SavedFireProperties.ProjectileClass = MyAmmo.ProjectileClass;
+    SavedFireProperties.WarnTargetPct = MyAmmo.WarnTargetPct;
+    SavedFireProperties.MaxRange = MyAmmo.MaxRange;
+    SavedFireProperties.bTossed = MyAmmo.bTossed;
+    SavedFireProperties.bTrySplash = MyAmmo.bTrySplash;
+    SavedFireProperties.bLeadTarget = MyAmmo.bLeadTarget;
+    SavedFireProperties.bInstantHit = MyAmmo.bInstantHit;
     SavedFireProperties.bInitialized = true;
   }
 
@@ -68,7 +75,7 @@ function SpawnTwoShots()
     }
   }
 
-  Spawn(class'HuskFireProjectile_SZ', self,, FireStart, FireRotation);
+  Spawn(SavedFireProperties.ProjectileClass, self,, FireStart, FireRotation);
 
   // Turn extra collision back on
   ToggleAuxCollision(true);
@@ -124,5 +131,6 @@ function RangedAttack(Actor A)
 defaultproperties
 {
   MenuName="Super Husk"
+  AmmunitionClass=class'ammo_Husk'
   ControllerClass=class'ctrl_ZombieSuperHusk'
 }
