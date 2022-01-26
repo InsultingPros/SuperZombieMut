@@ -18,9 +18,8 @@ simulated function PostBeginPlay()
 event Bump(actor Other)
 {
   if (bPouncing && KFHumanPawn(Other) != none)
-  {
-    class'SZReplicationInfo'.static.findSZri(KFHumanPawn(Other).PlayerReplicationInfo).setPoison();
-  }
+    setPoison(KFHumanPawn(Other));
+
   super.Bump(Other);
 }
 
@@ -31,10 +30,34 @@ function bool MeleeDamageTarget(int hitdamage, vector pushdir)
 
   result = super.MeleeDamageTarget(hitdamage, pushdir);
   if (result && KFHumanPawn(Controller.Target) != none)
-  {
-    class'SZReplicationInfo'.static.findSZri(KFHumanPawn(Controller.Target).PlayerReplicationInfo).setPoison();
-  }
+    setPoison(KFHumanPawn(Controller.Target));
+
   return result;
+}
+
+
+final private function setPoison(KFHumanPawn poisonedPawn)
+{
+  local Inventory I;
+  local bool bFoundPoison;
+
+  if (poisonedPawn.Inventory != none)
+  {
+    for (I = poisonedPawn.Inventory; I != none; I = I.Inventory)
+    {
+        if (inv_Poison(I) != none)
+        {
+           bFoundPoison = true;
+           inv_Poison(I).poisonStartTime = Level.TimeSeconds;
+        }
+    }
+  }
+  if (!bFoundPoison)
+  {
+    I = Controller.Spawn(class<Inventory>(DynamicLoadObject(string(class'inv_Poison'), class'Class')));
+    inv_Poison(I).poisonStartTime = Level.TimeSeconds;
+    I.GiveTo(poisonedPawn);
+  }
 }
 
 

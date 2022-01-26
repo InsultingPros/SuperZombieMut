@@ -94,22 +94,6 @@ function setBleeding(Pawn instigator)
 }
 
 
-function setPoison()
-{
-  if (!isPoisoned)
-  {
-    if (poisonItem == none)
-    {
-      poisonItem = spawn(class'IronBall', Owner);
-    }
-        
-    poisonItem.GiveTo(PlayerController(Owner).Pawn);
-  }
-  poisonStartTime = Level.TimeSeconds;
-  isPoisoned = true;
-}
-
-
 static function SZReplicationInfo findSZri(PlayerReplicationInfo pri)
 {
   local LinkedReplicationInfo lriIt;
