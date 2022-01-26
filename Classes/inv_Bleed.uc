@@ -12,6 +12,14 @@ event PostBeginPlay()
 {
   super.PostBeginPlay();
 
+  setMaxBleedCount();
+  // start the timer
+  SetTimer(fBleedPeriod, true);
+}
+
+
+final function setMaxBleedCount()
+{
   // suicide, HOE
   if (Level.Game.GameDifficulty >= 5.0)
     maxBleedCount = 7;
@@ -21,9 +29,6 @@ event PostBeginPlay()
   // beginner and everything else
   else
     maxBleedCount = 3;
-
-  // start the timer
-  SetTimer(fBleedPeriod, true);
 }
 
 

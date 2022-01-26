@@ -117,7 +117,7 @@ final private function MakeBleed(KFPawn poorpawn)
         bFoundPoison = true;
         bleedinv.stalker = self;
         // reset bleed count
-        bleedinv.maxBleedCount = bleedinv.default.maxBleedCount;
+        bleedinv.setMaxBleedCount();
       }
     }
   }
