@@ -23,26 +23,6 @@ replication
 }
 
 
-function PostBeginPlay()
-{
-  // suicide, HOE
-  if (Level.Game.GameDifficulty >= 5.0)
-  {
-    maxBleedCount = 7;
-  }
-  // normal, hard
-  else if (Level.Game.GameDifficulty >= 2.0)
-  {
-    maxBleedCount = 5;
-  }
-  // beginner and everything else
-  else
-  {
-    maxBleedCount = 3;
-  }
-}
-
-
 function tick(float DeltaTime)
 {
   local PlayerController ownerCtrllr;

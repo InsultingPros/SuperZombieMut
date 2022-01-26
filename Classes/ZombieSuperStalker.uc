@@ -95,10 +95,39 @@ function bool MeleeDamageTarget(int hitdamage, vector pushdir)
 
   result = super.MeleeDamageTarget(hitdamage, pushdir);
   if (result && KFPawn(Controller.Target) != none)
-  {
-    class'SZReplicationInfo'.static.findSZri(KFPawn(Controller.Target).PlayerReplicationInfo).setBleeding(Self);
-  }
+    MakeBleed(KFPawn(Controller.Target));
+
   return result;
+}
+
+
+final private function MakeBleed(KFPawn poorpawn)
+{
+  local Inventory I;
+  local inv_Bleed bleedinv;
+  local bool bFoundPoison;
+
+  if (poorpawn.Inventory != none)
+  {
+    for (I = poorpawn.Inventory; I != none; I = I.Inventory)
+    {
+      if (inv_Bleed(I) != none)
+      {
+        bleedinv = inv_Bleed(I);
+        bFoundPoison = true;
+        bleedinv.stalker = self;
+        // reset bleed count
+        bleedinv.maxBleedCount = bleedinv.default.maxBleedCount;
+      }
+    }
+  }
+  if (!bFoundPoison)
+  {
+    I = Controller.Spawn(class<Inventory>(DynamicLoadObject(string(class'inv_Bleed'), class'Class')));
+    bleedinv = inv_Bleed(I);
+    bleedinv.stalker = self;
+    bleedinv.GiveTo(poorpawn);
+  }
 }
 
 
