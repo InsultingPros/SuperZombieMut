@@ -66,7 +66,7 @@ function SpawnTwoShots()
   foreach DynamicActors(class'KFMonsterController', KFMonstControl)
   {
     // ignore zeds that the husk can't actually see... and ignore all fleshpounds, they are heavy
-    if (KFMonstControl == none || KFMonstControl != Controller || !LineOfSightTo(KFMonstControl) || ClassIsChildOf(KFMonstControl, class'FleshpoundZombieController'))
+    if (KFMonstControl == none || KFMonstControl == Controller || !LineOfSightTo(KFMonstControl) || ClassIsChildOf(class'FleshpoundZombieController', class'KFMonsterController'))
       continue;
 
     if (PointDistToLine(KFMonstControl.Pawn.Location, vector(FireRotation), FireStart) < 75)
